@@ -36,6 +36,9 @@ const handleScan = () => {
 const handleKeydown = (e: KeyboardEvent) => {
   if (e.key === 'Enter') {
     handleScan()
+  } else if (e.key === 'Tab' || e.key === 'ArrowRight') {
+    e.preventDefault()
+    store.skipWell()
   }
 }
 
@@ -134,7 +137,10 @@ watch(() => store.plate, (newPlate) => {
           </div>
 
           <div class="quick-actions">
-            <button class="secondary-btn" @click="store.skipWell">Skip Well</button>
+            <button class="secondary-btn" @click="store.skipWell">
+              Skip Well
+              <span class="kb-hint">[Tab]</span>
+            </button>
           </div>
         </div>
 
@@ -202,7 +208,13 @@ watch(() => store.plate, (newPlate) => {
             </div>
             
             <div class="grid-main">
-              <div class="grid-labels-left">
+              <div 
+                class="grid-labels-left"
+                :style="{ 
+                  gridTemplateRows: `repeat(${store.gridConfig.rows}, 1fr)`,
+                  gap: '0.4rem' 
+                }"
+              >
                 <div v-for="label in store.displaySideLabels" :key="label" class="row-label">{{ label }}</div>
               </div>
               
@@ -236,7 +248,7 @@ watch(() => store.plate, (newPlate) => {
 
 <style scoped>
 .app-container {
-  padding: 1.5rem;
+  padding: 1rem;
   max-width: 1400px;
   margin: 0 auto;
   width: 100%;
@@ -494,6 +506,20 @@ watch(() => store.plate, (newPlate) => {
   padding: 0.75rem;
   border-radius: 8px;
   border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.kb-hint {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1px 4px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
 }
 
 .quick-actions .secondary-btn:hover {
@@ -605,7 +631,7 @@ watch(() => store.plate, (newPlate) => {
 }
 
 .plate-card {
-  padding: 1.5rem;
+  padding: 1rem;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -615,17 +641,19 @@ watch(() => store.plate, (newPlate) => {
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 1rem;
+  padding: 0.5rem;
   background: rgba(0, 0, 0, 0.2);
   border-radius: 12px;
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
   overflow: auto;
 }
 
 .grid-labels-top {
   display: grid;
   grid-template-columns: 40px repeat(12, 1fr);
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
+  gap: 0.4rem;
+  justify-items: center;
 }
 
 .col-label {
@@ -641,11 +669,10 @@ watch(() => store.plate, (newPlate) => {
 }
 
 .grid-labels-left {
-  display: flex;
-  flex-direction: column;
+  display: grid;
   width: 40px;
-  justify-content: space-around;
-  padding-bottom: 5px; /* Alignment tweak */
+  align-items: center;
+  justify-items: center;
 }
 
 .row-label {
@@ -663,7 +690,7 @@ watch(() => store.plate, (newPlate) => {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   grid-template-rows: repeat(8, 1fr);
-  gap: 0.75rem;
+  gap: 0.4rem;
 }
 
 .well-circle {
@@ -709,7 +736,7 @@ watch(() => store.plate, (newPlate) => {
 
 @keyframes pulse {
   0% { transform: scale(1); opacity: 1; }
-  100% { transform: scale(1.4); opacity: 0; }
+  100% { transform: scale(1.25); opacity: 0; }
 }
 
 .well-tooltip {
