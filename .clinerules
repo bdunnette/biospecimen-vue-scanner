@@ -1,0 +1,23 @@
+# BioScanner Pro - AI Agent Context
+
+This project is a high-performance Vue 3 application for biospecimen scanning.
+
+## Core Principles
+1. **Modern Aesthetic**: Ultra-premium UI with glassmorphism and smooth animations.
+2. **Speed**: Optimized for fast barcode scanning (hands-free).
+3. **Type Safety**: Strict TypeScript everywhere.
+
+## Project Stack
+- **Framework**: Vue 3 (Script Setup)
+- **State**: Pinia
+- **Build**: Vite
+- **Manager**: Bun
+
+## Patterns
+- **State First**: Move logic into Pinia stores (`src/stores/`).
+- **CSS**: Use variables from `src/style.css`.
+- **Icons**: Use `lucide-vue-next`.
+
+## Common Commands
+- `bun dev`: Start development
+- `bun build`: Production build

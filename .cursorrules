@@ -1,0 +1,54 @@
+# AI Coding Agent Rules & Hints
+
+## Project Overview
+- **Name**: Biospecimen Vue Scanner
+- **Description**: A mobile-friendly browser application for scanning 96-well biospecimen plates.
+- **Goal**: Facilitate fast, accurate barcode intake with visual feedback and CSV export.
+
+## Tech Stack
+- **Framework**: [Vue 3](https://vuejs.org/) (Composition API, `<script setup>`)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Build Tool**: [Vite](https://vitejs.dev/)
+- **Package Manager**: [Bun](https://bun.sh/) (Use `bun` instead of `npm` or `yarn`)
+- **State Management**: [Pinia](https://pinia.vuejs.org/)
+- **Icons**: [Lucide Vue Next](https://lucide.dev/guide/packages/lucide-vue-next)
+- **Styling**: Vanilla CSS with a focus on modern aesthetics (glassmorphism, vibrant gradients).
+
+## Development Guidelines
+
+### 1. Script & Component Style
+- Always use `<script setup lang="ts">`.
+- Use **Composition API** exclusively.
+- Prefer `ref` for simple reactive state and `reactive` for complex objects if needed, but `ref` is generally preferred for consistency.
+- Keep components focused. Large components (like `App.vue`) should eventually be split into a `components/` directory.
+
+### 2. State Management (Pinia)
+- Stores are located in `src/stores/`.
+- Use the **Setup Store** syntax (functions) instead of Options API.
+- Maintain separate stores for distinct logic (e.g., `plateStore.ts` for plate state).
+
+### 3. UI/UX Standards
+- **Aesthetics**: Premium, modern look. Use CSS variables for colors and spacing.
+- **Responsiveness**: Ensure the layout works on tablets and desktop (scanner-heavy environments).
+- **Glassmorphism**: Use `.glass-panel` class for containers (semi-transparent backgrounds with backdrops-filter).
+- **Animations**: Use subtle transitions and micro-animations (e.g., the pulse effect on the active well).
+
+### 4. Workflow & Commands
+- **Install Dependencies**: `bun install`
+- **Run Dev Server**: `bun dev` (Runs on `http://localhost:5173`)
+- **Build**: `bun run build`
+- **Check Project Structure**:
+  - `src/stores/`: Data logic and persistence.
+  - `src/components/`: Reusable UI elements.
+  - `src/assets/`: Global styles and static assets.
+
+### 5. Coding Patterns
+- **Well IDs**: Always format as Row+Column (e.g., "A1", "H12").
+- **Scanning Logic**: Handle `Enter` key on inputs to trigger scan logging.
+- **Directionality**: Support both Row-wise (A1 -> A2) and Column-wise (H1 -> G1) scanning.
+
+## Instructions for AI Agents
+- When adding new features, maintain the modern CSS aesthetic.
+- Do not introduce new heavy dependencies without checking if existing ones (like Lucide or PapaParse) can handle it.
+- Always check `src/stores/plateStore.ts` before modifying state-related logic in components.
+- When generating CSS, use the existing design tokens in `src/style.css`.
