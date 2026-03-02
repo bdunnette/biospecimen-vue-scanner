@@ -9,7 +9,8 @@ import {
   Settings2, 
   History,
   Scan,
-  LayoutGrid
+  LayoutGrid,
+  Users
 } from 'lucide-vue-next'
 
 const store = usePlateStore()
@@ -141,6 +142,37 @@ watch(() => store.plate, (newPlate) => {
               Skip Well
               <span class="kb-hint">[Tab]</span>
             </button>
+          </div>
+        </div>
+
+        <div class="glass-panel panel-section subjects-box">
+          <div class="section-header">
+            <Users :size="18" />
+            <h2>Subject Assignment</h2>
+          </div>
+          <p class="subject-hint">Assign a subject ID for the entire {{ store.scanDirection === 'rows' ? 'row' : 'column' }}.</p>
+          
+          <div v-if="store.scanDirection === 'rows'" class="subject-grid">
+            <div v-for="r in store.rows" :key="r" class="subject-item">
+              <label>Row {{ r }}</label>
+              <input 
+                v-model="store.rowSubjectIds[r]" 
+                type="text" 
+                placeholder="Subject ID..." 
+                class="subject-input"
+              />
+            </div>
+          </div>
+          <div v-else class="subject-grid">
+            <div v-for="c in store.cols" :key="c" class="subject-item">
+              <label>Col {{ c }}</label>
+              <input 
+                v-model="store.colSubjectIds[c]" 
+                type="text" 
+                placeholder="Subject ID..." 
+                class="subject-input"
+              />
+            </div>
           </div>
         </div>
 
@@ -524,6 +556,41 @@ watch(() => store.plate, (newPlate) => {
 
 .quick-actions .secondary-btn:hover {
   background: rgba(255, 255, 255, 0.05);
+}
+
+.subjects-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.subject-hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.subject-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+.subject-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.subject-item label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.subject-input {
+  width: 100%;
+  padding: 0.4rem 0.5rem;
+  font-size: 0.8125rem;
 }
 
 .setting-item {

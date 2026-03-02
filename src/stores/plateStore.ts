@@ -18,6 +18,8 @@ export const usePlateStore = defineStore('plate', () => {
     const scanDirection = ref<'rows' | 'columns'>('rows')
     const autoAdvance = ref(true)
     const exportEmpty = ref(false)
+    const rowSubjectIds = ref<Record<string, string>>({})
+    const colSubjectIds = ref<Record<string, string>>({})
 
     // Initialize empty plate
     const initPlate = () => {
@@ -85,6 +87,8 @@ export const usePlateStore = defineStore('plate', () => {
             initPlate()
             currentWellId.value = 'A1'
             plateId.value = ''
+            rowSubjectIds.value = {}
+            colSubjectIds.value = {}
         }
     }
 
@@ -100,8 +104,16 @@ export const usePlateStore = defineStore('plate', () => {
             const colNum = parseInt(w.id.substring(1))
             const rowNum = rows.indexOf(rowLetter) + 1
 
+            let subjectId = ''
+            if (scanDirection.value === 'rows') {
+                subjectId = rowSubjectIds.value[rowLetter] || ''
+            } else {
+                subjectId = colSubjectIds.value[colNum.toString()] || ''
+            }
+
             return {
                 PlateID: plateId.value,
+                SubjectID: subjectId,
                 Vial: w.id,
                 RowLetter: rowLetter,
                 RowNum: rowNum,
@@ -178,6 +190,8 @@ export const usePlateStore = defineStore('plate', () => {
         scanDirection,
         autoAdvance,
         exportEmpty,
+        rowSubjectIds,
+        colSubjectIds,
         initPlate,
         logBarcode,
         skipWell,
