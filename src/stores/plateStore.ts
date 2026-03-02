@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import Papa from 'papaparse'
 
 export interface WellData {
@@ -32,6 +32,47 @@ export const usePlateStore = defineStore('plate', () => {
         })
         plate.value = newPlate
     }
+
+    // Load from localStorage
+    const loadState = () => {
+        const savedState = localStorage.getItem('plate_scanner_state')
+        if (savedState) {
+            try {
+                const parsed = JSON.parse(savedState)
+                if (parsed.plate) plate.value = parsed.plate
+                if (parsed.plateId !== undefined) plateId.value = parsed.plateId
+                if (parsed.currentWellId) currentWellId.value = parsed.currentWellId
+                if (parsed.scanDirection) scanDirection.value = parsed.scanDirection
+                if (parsed.autoAdvance !== undefined) autoAdvance.value = parsed.autoAdvance
+                if (parsed.exportEmpty !== undefined) exportEmpty.value = parsed.exportEmpty
+                if (parsed.rowSubjectIds) rowSubjectIds.value = parsed.rowSubjectIds
+                if (parsed.colSubjectIds) colSubjectIds.value = parsed.colSubjectIds
+            } catch (e) {
+                console.error("Failed to parse saved state", e)
+                initPlate()
+            }
+        } else {
+            initPlate()
+        }
+    }
+
+    // Persist to localStorage
+    watch(
+        [plate, plateId, currentWellId, scanDirection, autoAdvance, exportEmpty, rowSubjectIds, colSubjectIds],
+        () => {
+            localStorage.setItem('plate_scanner_state', JSON.stringify({
+                plate: plate.value,
+                plateId: plateId.value,
+                currentWellId: currentWellId.value,
+                scanDirection: scanDirection.value,
+                autoAdvance: autoAdvance.value,
+                exportEmpty: exportEmpty.value,
+                rowSubjectIds: rowSubjectIds.value,
+                colSubjectIds: colSubjectIds.value
+            }))
+        },
+        { deep: true }
+    )
 
     // Helper to get well ID by indices
     const getWellId = (rowIndex: number, colIndex: number) => {
@@ -193,6 +234,7 @@ export const usePlateStore = defineStore('plate', () => {
         rowSubjectIds,
         colSubjectIds,
         initPlate,
+        loadState,
         logBarcode,
         skipWell,
         clearPlate,

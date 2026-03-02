@@ -18,7 +18,7 @@ const barcodeInput = ref('')
 const inputRef = ref<HTMLInputElement | null>(null)
 
 onMounted(() => {
-  store.initPlate()
+  store.loadState()
   focusInput()
 })
 
