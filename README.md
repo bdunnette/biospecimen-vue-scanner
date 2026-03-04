@@ -4,6 +4,10 @@
 
 A modern, high-efficiency web application for 96-well biospecimen plate scanning.
 
+![Scanning Workflow Screenshot](public/scanning_workflow.png)
+
+*Watch the [scanning workflow demonstration (video)](public/scanning_workflow.webp)*
+
 ## 🚀 Quick Start
 
 1. **Install dependencies**:
